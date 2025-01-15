@@ -1,0 +1,38 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl=2
+
+// Définition des paramètres
+params.input_dir = '/home/nguyeho3/Documents/Test_Nextflow/genomes' // Chemin vers les fichiers d'entrée
+params.output_dir = '/home/nguyeho3/Documents/Test_Nextflow' // Dossier pour les résultats
+
+// Processus pour extraire les chromosomes
+process extract_chromosomes {
+    tag "${file.name}"
+
+    input:
+    path file
+
+    output:
+    path "Chromosomes/${file.baseName}/*", emit: genome_files
+
+    publishDir params.output_dir, mode: 'copy'
+
+    script:
+    """
+    mkdir -p Chromosomes/${file.baseName}
+    python3 /home/nguyeho3/Documents/Test_Nextflow/extraction_chromosome.py --input ${file} --output Chromosomes/${file.baseName}
+    """
+}
+
+// Workflow principal
+workflow {
+    // Crée un canal à partir des fichiers du répertoire d'entrée
+    files_ch = Channel.fromPath("${params.input_dir}/*")
+
+    // Vérifiez si le canal contient des fichiers
+    files_ch.view() // Affiche les fichiers du canal dans la sortie
+
+    // Connecter le canal de fichiers au processus
+    extracted_chromosomes = extract_chromosomes(files_ch)
+}
