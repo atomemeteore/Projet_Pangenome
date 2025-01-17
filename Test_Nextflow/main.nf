@@ -3,8 +3,8 @@
 nextflow.enable.dsl=2
 
 // Définition des paramètres
-params.input_dir = '/home/nguyeho3/Documents/Test_Nextflow/genomes' // Chemin vers les fichiers d'entrée
-params.output_dir = '/home/nguyeho3/Documents/Test_Nextflow' // Dossier pour les résultats
+params.input_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes' // Chemin vers les fichiers d'entrée
+params.output_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow' // Dossier pour les résultats
 
 // Processus pour extraire les chromosomes
 process extract_chromosomes {
@@ -21,7 +21,7 @@ process extract_chromosomes {
     script:
     """
     mkdir -p Chromosomes/${file.baseName}
-    python3 /home/nguyeho3/Documents/Test_Nextflow/extraction_chromosome.py --input ${file} --output Chromosomes/${file.baseName}
+    python3 /home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/extraction_chromosome.py --input ${file} --output Chromosomes/${file.baseName}
     """
 }
 
