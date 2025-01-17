@@ -2,7 +2,7 @@ from pathlib import Path
 from collections import defaultdict
 
 # Répertoire contenant les fichiers .fasta
-chemin = Path("/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/Chromosomes")
+chemin = Path("Projet_Pangenome/Chromosomes")
 
 # Dictionnaire pour regrouper les fichiers par leur suffixe
 groupes_fichiers = defaultdict(list)
@@ -30,7 +30,7 @@ for element in chemin.glob("*.fasta"):
                 groupes_contenu[key].append(contenu)
 
 # Créer le répertoire de sortie s'il n'existe pas
-dossier = Path("/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/Concat")
+dossier = Path("Projet_Pangenome/Concat")
 if not dossier.exists():
     dossier.mkdir(parents=True)
 
@@ -41,4 +41,4 @@ for key, sequences in groupes_contenu.items():
         with open(output_file, "w") as concat:
             concat.write("\n".join(sequences))
 
-print("Concaténation terminée avec succès.")
+print("Concaténation terminée.")
