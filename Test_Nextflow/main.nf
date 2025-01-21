@@ -1,38 +1,29 @@
-#!/usr/bin/env nextflow
+params.genomes_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes'  
+params.concat_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/concat'
 
-nextflow.enable.dsl=2
 
-// Définition des paramètres
-params.input_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes' // Chemin vers les fichiers d'entrée
-params.output_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow' // Dossier pour les résultats
-
-// Processus pour extraire les chromosomes
-process extract_chromosomes {
-    tag "${file.name}"
+process extract_and_concatenate {
 
     input:
-    path file
+    path genome_file
 
     output:
-    path "Chromosomes/${file.baseName}/*", emit: genome_files
-
-    publishDir params.output_dir, mode: 'copy'
+    path "${genome_file.baseName}_concatenated.fasta"
 
     script:
     """
-    mkdir -p Chromosomes/${file.baseName}
-    python3 /home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/extraction_chromosome.py --input ${file} --output Chromosomes/${file.baseName}
+    python3 $projectDir/extract_and_concatenate.py --input ${genome_file.parent} --output ${genome_file.baseName}_concatenated.fasta
     """
 }
 
-// Workflow principal
+
 workflow {
-    // Crée un canal à partir des fichiers du répertoire d'entrée
-    files_ch = Channel.fromPath("${params.input_dir}/*")
+    genomes_files = Channel.fromPath("${params.genomes_dir}/*.fasta")
+    concat_files = extract_and_concatenate(genomes_files)
 
-    // Vérifiez si le canal contient des fichiers
-    files_ch.view() // Affiche les fichiers du canal dans la sortie
-
-    // Connecter le canal de fichiers au processus
-    extracted_chromosomes = extract_chromosomes(files_ch)
+    // Move files to the final output directory
+    concat_files.view()
+    concat_files.map { file -> 
+        file.moveTo("${params.concat_dir}/${file.name}")
+    }
 }
