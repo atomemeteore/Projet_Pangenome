@@ -1,6 +1,7 @@
-params.genomes_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes'  
-params.concat_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/concat'
-
+params.genomes_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes'
+params.concat_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow'
+params.inputPGGB_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/concat'
+params.outputPGGB_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow'
 
 process extract_and_concatenate {
 
@@ -16,14 +17,31 @@ process extract_and_concatenate {
     """
 }
 
+process PGGB {
+    input:
+    path fasta_file // Input directory concatenated chromosomes in fasta format
+
+    output:
+    path "Results_PGGB/${fasta_file.baseName}" // Outputdirectory for each fasta file
+
+    publishDir "${params.outputPGGB_dir}/${fasta_file.baseName}", mode: 'copy' // Copy each output to its specific directory
+
+    script:
+    """
+    mkdir -p Results_PGGB/${fasta_file.baseName}
+    samtools faidx ${fasta_file}
+    nohup pggb -i ${fasta_file} -n 6 -o Results_PGGB/${fasta_file.baseName} --multiqc
+    """
+}
+
+
+
 
 workflow {
-    genomes_files = Channel.fromPath("${params.genomes_dir}/*.fasta")
-    concat_files = extract_and_concatenate(genomes_files)
+    extract_and_concatenate(params.genomes_dir)
 
-    // Move files to the final output directory
-    concat_files.view()
-    concat_files.map { file -> 
-        file.moveTo("${params.concat_dir}/${file.name}")
-    }
+        // Étape 2 : PGGB pour chaque fichier concaténé
+    Channel
+        .fromPath("${params.inputPGGB_dir}/*.fasta")
+        | PGGB
 }
