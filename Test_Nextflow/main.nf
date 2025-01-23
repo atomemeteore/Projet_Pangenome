@@ -1,6 +1,5 @@
 params.genomes_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes'
 params.concat_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow'
-params.inputPGGB_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/concat'
 params.outputPGGB_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/Results_PGGB'
 params.index_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/Results_Index'
 
@@ -20,28 +19,12 @@ process extract_and_concatenate {
     """
 }
 
-process PGGB {
+process index_fasta {
     input:
     path fasta_file // Input individual FASTA file
 
     output:
-    path "Results_PGGB/${fasta_file.baseName}" // Output directory for each FASTA file
-
-    publishDir "${params.outputPGGB_dir}/${fasta_file.baseName}", mode: 'copy' // Copy each result to its specific directory
-
-    script:
-    """
-    mkdir -p Results_PGGB/${fasta_file.baseName}
-    pggb -i ${fasta_file} -n 6 -o Results_PGGB/${fasta_file.baseName} --multiqc
-    """
-}
-
-process index_output {
-    input:
-    path fasta_file // Input individual FASTA file from PGGB output
-
-    output:
-    path "${fasta_file.baseName}.fai" // Output index file
+    tuple path(fasta_file), path("${fasta_file}.fai") // Output FASTA file and its index
 
     publishDir "${params.index_dir}", mode: 'copy' // Copy index files to the index directory
 
@@ -51,13 +34,37 @@ process index_output {
     """
 }
 
+process PGGB {
+    input:
+    tuple path(fasta_file), path(index_file) // Input FASTA file and its index
+
+    output:
+    path "${fasta_file.baseName}" // Output directory for PGGB results
+
+    publishDir "${params.outputPGGB_dir}/${fasta_file.baseName}", mode: 'copy' // Copy each result to its specific directory
+
+    script:
+    """
+    mkdir -p ${fasta_file.baseName}
+    pggb -i ${fasta_file} -n 6 -o ${fasta_file.baseName} --multiqc
+    """
+}
+
 workflow {
     // Étape 1 : Extraction et concaténation
     extract_and_concatenate(params.genomes_dir)
 
-    // Étape 2 : PGGB pour chaque fichier concaténé
+    // Étape 2 : Récupération des fichiers générés dans le répertoire `concat`
     Channel
-        .fromPath("${params.inputPGGB_dir}/*.fasta")
+        .fromPath("${params.concat_dir}/concat/*.fasta")
+        .view { "Fichier détecté pour indexation : ${it}" }
+        .set {fasta_files}
+
+    fasta_files | index_fasta
+
+    index_fasta.out.view {"indexé : ${it}"}
+
+    // Étape 3 : Exécution de PGGB pour chaque fichier indexé
+    index_fasta.out
         | PGGB
-        | index_output
 }
