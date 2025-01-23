@@ -36,3 +36,7 @@ Le dossier Github Projet_Pangenome comprend :
 
 Pour la bonne réalisation des scripts dans le dossier Projet_Pangenome et du pipeline dans le dossier Test_Nextflow, vérifier les chemins des inputs et des outputs et les modifier si besoin : Le chemin de l'input devrait pointer vers le dossier complet "genomes" comportant les différentes génomiques sous format fasta.
 (Des modifications seront apportées pour permettre une utilisation plus générale des chemins).
+
+## Resultats
+Voici un résultat typique obtenu (Chromosome 1):
+https://drive.google.com/drive/folders/1kdyqLPhc6dezEdd0MDf1sTXiTUX14-BK?usp=sharing
