@@ -28,6 +28,7 @@ process index_fasta {
 
     publishDir "${params.index_dir}", mode: 'copy' // Copy index files to the index directory
 
+    maxForks 1
     script:
     """
     samtools faidx ${fasta_file}
@@ -42,6 +43,8 @@ process PGGB {
     path "${fasta_file.baseName}" // Output directory for PGGB results
 
     publishDir "${params.outputPGGB_dir}/${fasta_file.baseName}", mode: 'copy' // Copy each result to its specific directory
+
+    maxForks 1 // Limiter à un seul processus PGGB en cours à la fois
 
     script:
     """
@@ -65,6 +68,5 @@ workflow {
     index_fasta.out.view {"indexé : ${it}"}
 
     // Étape 3 : Exécution de PGGB pour chaque fichier indexé
-    index_fasta.out
-        | PGGB
+    index_fasta.out | PGGB
 }

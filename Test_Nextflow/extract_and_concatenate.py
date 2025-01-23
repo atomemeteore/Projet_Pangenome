@@ -23,7 +23,8 @@ def extraction_chromosome(input_dir, output_dir):
         output_file = output_dir / f"Concat_{group}.fasta"
         with open(output_file, "w") as concat:
             for chr in chr_list:
-                concat.write(f">{chr.description}\n{chr.seq}\n")
+                print(chr)
+                concat.write(f">{chr.id}\n{chr.seq}\n")
 
     print("Fichiers FASTA générés.")
 
