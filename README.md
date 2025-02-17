@@ -38,5 +38,5 @@ Pour la bonne réalisation des scripts dans le dossier Projet_Pangenome et du pi
 (Des modifications seront apportées pour permettre une utilisation plus générale des chemins).
 
 ## Resultats
-Voici un résultat typique obtenu (Chromosome 1):
-https://drive.google.com/drive/folders/1kdyqLPhc6dezEdd0MDf1sTXiTUX14-BK?usp=sharing
+Voici un résultat typique obtenu (Chromosome 5):
+https://drive.google.com/file/d/1jwcx1gf7WMsbg5im4JxlzF2IoCR2bUi4/view?usp=sharing
