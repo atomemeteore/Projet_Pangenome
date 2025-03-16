@@ -41,6 +41,10 @@ Pour la bonne réalisation des scripts dans le dossier Projet_Pangenome et du pi
 Voici un résultat typique obtenu (Chromosome 5):
 https://drive.google.com/file/d/1jwcx1gf7WMsbg5im4JxlzF2IoCR2bUi4/view?usp=sharing
 
+## Pistes d'intérêts pour l'annotation de graphes 
+
+GRannot : https://forge.ird.fr/diade/dynadiv/grannot
+
 
 # _**Alexis NGUYEN bioinformatics analysis project (M2 CCB4 - Université de Rouen Normandie)**_
 
