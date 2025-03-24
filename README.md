@@ -41,6 +41,8 @@ Pour la bonne réalisation des scripts dans le dossier Projet_Pangenome et du pi
 Voici un résultat typique obtenu (Chromosome 5):
 https://drive.google.com/file/d/1jwcx1gf7WMsbg5im4JxlzF2IoCR2bUi4/view?usp=sharing
 
+![Concat_C5 fasta bf3285f 11fba48 9fb5d42 smooth final og viz_multiqc](https://github.com/user-attachments/assets/346f80ae-0773-474d-bf61-e371293e29cb)
+
 ## Pistes d'intérêts pour l'annotation de graphes 
 
 GRannot : https://forge.ird.fr/diade/dynadiv/grannot
@@ -89,5 +91,27 @@ For the correct execution of the scripts in the Projet_Pangenome folder and the 
 The following is a typical result (Chromosome 5):
 https://drive.google.com/file/d/1jwcx1gf7WMsbg5im4JxlzF2IoCR2bUi4/view?usp=sharing
 
+![Concat_C5 fasta bf3285f 11fba48 9fb5d42 smooth final og viz_multiqc](https://github.com/user-attachments/assets/346f80ae-0773-474d-bf61-e371293e29cb)
 
+
+## Transfert d'annotations 
+
+GrAnnot est utilisé pour transférer les annotations de fichiers GFF d'un génome de référence à un graphe de pangénome le contenant.
+https://forge.ird.fr/diade/dynadiv/grannot.git 
+
+``` grannot graph.gfa annotation.gff source_genome -gff  ```
+
+## Exemple d'utilisation 
+
+Tout d'abord, récupérer les fichiers de séquences génomiques fasta et les ranger dans un dossier "genomes".
+Utiliser le fichier main.nf
+Si besoin, modifier les chemins d'accès précisés dans le fichier (extrait ci-dessous) : 
+```
+params.genomes_dir = '/path_to_/genomes'
+params.concat_dir = '/path_to/Test_Nextflow'
+```
+Lancer la pipeline nextflow :
+```nextflow run main.nf```
+
+Le pieline permet de d'extraire les séquences chromosomiques et de les concaténer en fonction de leur numéro. Les fichiers fasta obtenus sont ensuités utiliser par PGGB afin de créer un pangénome en graphe. 
 
