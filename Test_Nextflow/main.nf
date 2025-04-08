@@ -1,4 +1,4 @@
-params.genomes_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes'
+params.genomes_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/genomes' // create directory with your genomes if not present already
 params.concat_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow'
 params.outputPGGB_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/Results_PGGB'
 params.index_dir = '/home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/Results_Index'
@@ -15,7 +15,7 @@ process extract_and_concatenate {
     script:
     """
     mkdir -p concat
-    python3 /home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/extract_and_concatenate.py --input ${genomes_dir} --output concat
+    python3 /home/nguyeho3/Documents/Github_Pangenome/Projet_Pangenome/Test_Nextflow/scripts/extract_and_concatenate.py --input ${genomes_dir} --output concat
     """
 }
 
