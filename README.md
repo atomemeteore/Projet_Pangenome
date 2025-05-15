@@ -93,6 +93,9 @@ https://drive.google.com/file/d/1jwcx1gf7WMsbg5im4JxlzF2IoCR2bUi4/view?usp=shari
 
 ![Concat_C5 fasta bf3285f 11fba48 9fb5d42 smooth final og viz_multiqc](https://github.com/user-attachments/assets/346f80ae-0773-474d-bf61-e371293e29cb)
 
+## Citation for PDF 
+Visualisation of vcf annotations has been with the use of Jbrowse2 software 
+JBrowse 2: a modular genome browser with views of synteny and structural variation. Genome Biology (2023). https://doi.org/10.1186/s13059-023-02914-z 
 
 ## Transfert d'annotations 
 
@@ -113,5 +116,5 @@ params.concat_dir = '/path_to/Test_Nextflow'
 Lancer la pipeline nextflow :
 ```nextflow run main.nf```
 
-Le pieline permet de d'extraire les séquences chromosomiques et de les concaténer en fonction de leur numéro. Les fichiers fasta obtenus sont ensuités utiliser par PGGB afin de créer un pangénome en graphe. 
+Le pipeline permet de d'extraire les séquences chromosomiques et de les concaténer en fonction de leur numéro. Les fichiers fasta obtenus sont ensuités utiliser par PGGB afin de créer un pangénome en graphe. 
 
