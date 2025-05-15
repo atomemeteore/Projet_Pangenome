@@ -95,6 +95,7 @@ https://drive.google.com/file/d/1jwcx1gf7WMsbg5im4JxlzF2IoCR2bUi4/view?usp=shari
 
 ## Citation for PDF 
 Visualisation of vcf annotations has been with the use of Jbrowse2 software 
+
 JBrowse 2: a modular genome browser with views of synteny and structural variation. Genome Biology (2023). https://doi.org/10.1186/s13059-023-02914-z 
 
 ## Transfert d'annotations 
